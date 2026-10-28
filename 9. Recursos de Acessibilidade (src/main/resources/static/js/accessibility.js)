@@ -1,0 +1,10 @@
+// Script para ativar o modo de alto contraste e suporte a leitores de tela
+document.addEventListener("DOMContentLoaded", function() {
+    const toggleAccessibility = document.getElementById("toggle-accessibility");
+    if (toggleAccessibility) {
+        toggleAccessibility.addEventListener("change", function() {
+            document.body.classList.toggle("high-contrast", this.checked);
+            console.log("Modo de acessibilidade (Alto Contraste / Leitor de Tela) alterado para: " + this.checked);
+        });
+    }
+});
