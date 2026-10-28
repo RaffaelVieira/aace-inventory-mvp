@@ -1,0 +1,30 @@
+package com.aace.inventario.service;
+
+import com.aace.inventario.model.Lote;
+import com.aace.inventario.repository.LoteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.util.List;
+
+@Service
+public class LoteService {
+
+    @Autowired
+    private LoteRepository loteRepository;
+
+    public List<Lote> listarTodos() {
+        return loteRepository.findAll();
+    }
+
+    public Lote salvar(Lote lote) {
+        if (lote.getDataValidade().isBefore(LocalDate.now().plusDays(5))) {
+            lote.setStatusAlerta("ALERTA: Validade Próxima");
+        }
+        return loteRepository.save(lote);
+    }
+
+    public List<Lote> buscarLotesCriticos() {
+        return loteRepository.findByDataValidadeBefore(LocalDate.now().plusDays(5));
+    }
+}
