@@ -1,0 +1,37 @@
+package com.aace.inventario;
+
+import com.aace.inventario.model.Lote;
+import com.aace.inventario.repository.LoteRepository;
+import com.aace.inventario.service.LoteService;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+@SpringBootTest
+class LoteServiceTest {
+
+    @Mock
+    private LoteRepository loteRepository;
+
+    @InjectMocks
+    private LoteService loteService;
+
+    @Test
+    void deveAtribuirAlertaQuandoValidadeForProxima() {
+        Lote lote = new Lote();
+        lote.setLoteId("AACE-002");
+        lote.setDataValidade(LocalDate.now().plusDays(2));
+
+        when(loteRepository.save(any(Lote.class))).thenReturn(lote);
+
+        Lote resultado = loteService.salvar(lote);
+        assertEquals("ALERTA: Validade Próxima", resultado.getStatusAlerta());
+    }
+}
